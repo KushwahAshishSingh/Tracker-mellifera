@@ -1,0 +1,20 @@
+{
+  "name": "tracker",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "express": "~4.15.5",
+    "helmet": "^3.9.0",
+    "mongodb": "^2.2.33"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.5"
+  },
+  "author": "Ashish Singh",
+  "lisense": ""
+}
