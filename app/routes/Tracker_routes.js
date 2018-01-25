@@ -118,8 +118,8 @@ module.exports = function(app, db) {
                         $set: {
                             "track.stages.Stage1": {
                                 "stage": "stage1",
+                                "lastLookedAt": new Date(),
                                 "Comment": req.body.Comment,
-                                "lastLookedAt": new Date()
                             }
                         }
                     },
@@ -133,8 +133,8 @@ module.exports = function(app, db) {
                         $set: {
                             "track.stages.Stage2": {
                                 "stage": "stage2",
+                                "lastLookedAt": new Date(),
                                 "Comment": req.body.Comment,
-                                "lastLookedAt": new Date()
                             }
                         }
                     },
@@ -148,8 +148,8 @@ module.exports = function(app, db) {
                         $set: {
                             "track.stages.Stage3": {
                                 "stage": "stage3",
-                                "Comment": req.body.Comment,
-                                "lastLookedAt": new Date()
+                                "lastLookedAt": new Date(),
+                                "Comment":Comment,
                             }
                         }
                     }
