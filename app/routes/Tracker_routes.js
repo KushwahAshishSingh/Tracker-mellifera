@@ -110,43 +110,51 @@ module.exports = function(app, db) {
                 $cond: {
                     if: {
 
-                        $eq: ["track.stages.Stage1.stage1", ""]
+                        $or:[
+                            { $eq: ["track.stages.Stage1.stage", ""]}, { $eq: ["track.stages.Stage1.stage", "stage1"]} ]
+                      //  $eq: ["track.stages.Stage1.stage", ""]
                     },
                     then: {
                         $set: {
-                                "track.stages.Stage1": {
-                                    "stage": "stage1",
-                                    "Comment": req.body.Comment,
-                                    "lastLookedAt": new Date()
-                                }
-                        }
+                            "track.stages.Stage1": {
+                                "stage": "stage1",
+                                "Comment": req.body.Comment,
+                                "lastLookedAt": new Date()
+                            }
                         }
                     },
+
                     elseif: {
-                        $eq: ["track.stages.Stage2.stage", ""]
+                        $or:[
+                            { $eq: ["track.stages.Stage2.stage", ""]}, { $eq: ["track.stages.Stage2.stage", "stage2"]} ]
+                      //  $eq: ["track.stages.Stage2.stage", ""]
                     },
                     then: {
-                        $set: { "track.stages.Stage2": {
-                                    "stage": "stage2",
-                                    "Comment": req.body.Comment,
-                                    "lastLookedAt": new Date()
-                                }
-                            }
-                        },
-
-            elseif: {
-                        $eq: ["track.stages.Stage3.stage", ""]
-                    },
-                      then: {
-                        $set: { "track.stages.Stage3": {
-                                    "stage": "stage3",
-                                    "Comment": req.body.Comment,
-                                    "lastLookedAt": new Date()
-                                }
+                        $set: {
+                            "track.stages.Stage2": {
+                                "stage": "stage2",
+                                "Comment": req.body.Comment,
+                                "lastLookedAt": new Date()
                             }
                         }
+                    },
 
+                    elseif: {
+                        $or:[
+                            { $eq: ["track.stages.Stage3.stage", ""]}, { $eq: ["track.stages.Stage3.stage", "stage3"]} ]
+                       // $eq: ["track.stages.Stage3.stage", ""]
+                    },
+                    then: {
+                        $set: {
+                            "track.stages.Stage3": {
+                                "stage": "stage3",
+                                "Comment": req.body.Comment,
+                                "lastLookedAt": new Date()
+                            }
+                        }
+                    }
 
+                }
                 },
 
                     function (err, result) {
