@@ -83,20 +83,20 @@ module.exports = function(app, db) {
         const Track ={
             stages: {
                 Stage1: {
-                    stage: req.body.stage,
+                    stage: "stage1",
                     Comment: req.body.comment,
-                    lastLookedAt: req.body.lastLookedAt,
+                    lastLookedAt: " ",
                 },
                 Stage2: {
-                    stage: req.body.stage,
+                    stage: "stage2",
                     Comment: req.body.Comment,
-                    lastLookedAt: req.body.lastLookedAt,
+                    lastLookedAt: " ",
 
                 },
                 Stage3: {
-                    stage: req.body.stage,
+                    stage: "stage3",
                     Comment: req.body.Comment,
-                    lastLookedAt: req.body.lastLookedAt,
+                    lastLookedAt: " ",
 
                 }
             },
@@ -115,9 +115,9 @@ module.exports = function(app, db) {
                     then: {
                         $set: {
                                 "track.stages.Stage1": {
-                                    stage1: "stage1",
-                                    Comment: "done",
-                                    lastLookedAt: new Date()
+                                    "stage": "stage1",
+                                    "Comment": req.body.Comment,
+                                    "lastLookedAt": new Date()
                                 }
                         }
                         }
@@ -127,9 +127,9 @@ module.exports = function(app, db) {
                     },
                     then: {
                         $set: { "track.stages.Stage2": {
-                                    stage2: "stage2",
-                                    Comment: "done",
-                                    lastLookedAt: new Date()
+                                    "stage": "stage2",
+                                    "Comment": req.body.Comment,
+                                    "lastLookedAt": new Date()
                                 }
                             }
                         },
@@ -139,9 +139,9 @@ module.exports = function(app, db) {
                     },
                       then: {
                         $set: { "track.stages.Stage3": {
-                                    stage3: "stage3",
-                                    Comment: "done",
-                                    lastLookedAt: new Date()
+                                    "stage": "stage3",
+                                    "Comment": req.body.Comment,
+                                    "lastLookedAt": new Date()
                                 }
                             }
                         }
