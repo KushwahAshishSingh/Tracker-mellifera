@@ -4,6 +4,7 @@ Main routes
 
 const ObjectId = require('mongodb').ObjectID;
 //const BarCode_Info = require('mongodb').BarCode_Info;
+//var d = new Date(year, month, day, hour, minute, second, millisecond);
 
 
 
@@ -39,30 +40,136 @@ module.exports = function(app, db) {
 
 
     // Update Collection
-    app.post('/Update', (req, res, next) => {
+    app.post('/Update', (req, res) => {
 
         const Track = {
-            // Width_in_MM: req.body.Width_in_MM,
-            // Length_in_MM: req.body.Length_in_MM,
-            // No_of_FINS: req.body.No_of_FINS,
-            // Order_Qty: req.body.Order_Qty,
-            // JOB_No: req.body.JOB_No,
-            BarCode_Info: req.body.BarCode_Info,
-            Comment: req.body.Comment
+
+            stage1: {
+                stage1: req.body.stage1,
+                lastLookedAt:new Date(),
+                comment: req.body.comment,
+            },
+             Stage2: {
+                 stage2: req.body.stage2,
+                 lastLookedAt: new Date(),
+                 comment: req.body.comment,
+             },
+             stage3: {
+                 stage3: req.body.stage3,
+                 lastLookedAt: new Date(),
+                 comment: req.body.comment,
+             },
+            BarCode_Info: req.body.BarCode_Info
+
         };
     const BarCode_Info = req.body.BarCode_Info
 
-    db.collection('Tracker').findOneAndUpdate({BarCode_Info: BarCode_Info}, {$set: Track}, function (err, result) {
+    db.collection('Tracker').updateOne({BarCode_Info: BarCode_Info}, {$set: Track}, {multi: true}, function (err, result) {
         if (err) {
             res.send({error: 'An error has occurred'});
-            res.writeHead(400,{'Content-Type': 'application/json'});
+            //res.writeHead(400,{'Content-Type': 'application/json'});
         } else {
             console.log('updated');
             res.send(result);
-            res.writeHead(200,{'Content-Type': 'application/json'});
+           // res.writeHead(200,{'Content-Type': 'application/json'});
         }
     });
 });
+
+
+
+    app.post('UpdateTracker', (req, res, next) => {
+
+        const Track ={
+            stages: {
+                Stage1: {
+                    stage: req.body.stage,
+                    Comment: req.body.comment,
+                    lastLookedAt: req.body.lastLookedAt,
+                },
+                Stage2: {
+                    stage: req.body.stage,
+                    Comment: req.body.Comment,
+                    lastLookedAt: req.body.lastLookedAt,
+
+                },
+                Stage3: {
+                    stage: req.body.stage,
+                    Comment: req.body.Comment,
+                    lastLookedAt: req.body.lastLookedAt,
+
+                }
+            },
+            BarCode_Info: req.body.BarCode_Info
+        };
+
+        const BarCode_Info = req.body.BarCode_Info;
+
+        db.collection('Tracker').findOneAndUpdate({BarCode_Info: BarCode_Info},
+            {
+                $cond: {
+                    if: {
+
+                        $eq: ["track.stages.Stage1.stage1", ""]
+                    },
+                    then: {
+                        $set: {
+                                "track.stages.Stage1": {
+                                    stage1: "stage1",
+                                    Comment: "done",
+                                    lastLookedAt: new Date()
+                                }
+                        }
+                        }
+                    },
+                    elseif: {
+                        $eq: ["track.stages.Stage2.stage", ""]
+                    },
+                    then: {
+                        $set: { "track.stages.Stage2": {
+                                    stage2: "stage2",
+                                    Comment: "done",
+                                    lastLookedAt: new Date()
+                                }
+                            }
+                        },
+
+            elseif: {
+                        $eq: ["track.stages.Stage3.stage", ""]
+                    },
+                      then: {
+                        $set: { "track.stages.Stage3": {
+                                    stage3: "stage3",
+                                    Comment: "done",
+                                    lastLookedAt: new Date()
+                                }
+                            }
+                        }
+
+
+                },
+
+                    function (err, result) {
+                        if(err){
+                            res.send({error: 'An error has occured'});
+                        }
+                        else{
+                            console.log('updated');
+                            res.send(result);
+                        }
+
+                    });
+    });
+
+
+
+
+
+
+
+
+
+
 
 
     app.get('/Find/:BarCode_Info', (req, res) => {
@@ -86,8 +193,6 @@ module.exports = function(app, db) {
 });
 
 
-//
-//
 //     app.post('/Find', (req, res) => {
 //
 //         const resultArray = [];
