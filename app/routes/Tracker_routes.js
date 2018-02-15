@@ -201,28 +201,28 @@ module.exports = function(app, db) {
 });
 
 
-//     app.post('/Find', (req, res) => {
-//
-//         const resultArray = [];
-//     const BarCode_Info = req.body.BarCode_Info;
-//
-//
-//     var Results = db.collection('Tracker').find(
-//          {BarCode_Info: BarCode_Info}
-//
-//             );
-//     Results.toArray(function(error, docs) {
-//         resultArray.push(docs);
-//
-//         if (docs) {
-//             res.send(resultArray);
-//             res.writeHead(200,{'Content-Type': 'application/json'});
-//         } else {
-//             res.send({error: 'not in our database'});
-//             res.writeHead(204,{'Content-Type': 'application/json'});
-//         }
-//     });
-// });
+    app.post('/Find', (req, res) => {
+
+        const resultArray = [];
+    const BarCode_Info = req.body.BarCode_Info;
+
+
+    var Results = db.collection('Tracker').find(
+         {BarCode_Info: BarCode_Info}
+
+            );
+    Results.toArray(function(error, docs) {
+        resultArray.push(docs);
+
+        if (docs) {
+            res.send(resultArray);
+            res.writeHead(200,{'Content-Type': 'application/json'});
+        } else {
+            res.send({error: 'not in our database'});
+            res.writeHead(204,{'Content-Type': 'application/json'});
+        }
+    });
+});
 
 };
 
